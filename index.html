@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>💜 LEVEL UP OFFERS | Dynamic Deal Zone</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: radial-gradient(circle at 10% 20%, #0f071f, #05020a);
+      font-family: 'Inter', system-ui, sans-serif;
+      padding: 2rem 1.5rem;
+      min-height: 100vh;
+    }
+
+    .main-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    /* LEFT CONTENT AREA */
+    .content-area {
+      flex: 3;
+      min-width: 250px;
+    }
+
+    /* RIGHT SIDEBAR WITH 3 LEVEL BUTTONS */
+    .level-sidebar {
+      flex: 0.8;
+      min-width: 160px;
+      position: sticky;
+      top: 2rem;
+      align-self: flex-start;
+      background: rgba(20, 12, 40, 0.7);
+      backdrop-filter: blur(16px);
+      border-radius: 2rem;
+      padding: 1.5rem 1rem;
+      border: 1px solid rgba(192, 132, 252, 0.4);
+      height: fit-content;
+    }
+
+    .level-sidebar h3 {
+      color: #e9d5ff;
+      font-size: 1.2rem;
+      text-align: center;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .level-sidebar h3 i {
+      color: #c084fc;
+    }
+
+    .level-btn {
+      width: 100%;
+      background: linear-gradient(105deg, #1e1535, #150e28);
+      border: 1px solid #4c1d95;
+      border-radius: 60px;
+      padding: 12px 0;
+      margin-bottom: 1rem;
+      text-align: center;
+      font-weight: 700;
+      font-size: 1rem;
+      color: #d9c6ff;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .level-btn i {
+      font-size: 1.1rem;
+      color: #c084fc;
+    }
+
+    .level-btn:hover {
+      background: linear-gradient(105deg, #2a1e4a, #1c1338);
+      border-color: #a855f7;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 14px rgba(0,0,0,0.4);
+    }
+
+    .level-btn.active {
+      background: linear-gradient(105deg, #8b5cf6, #7c3aed);
+      border-color: #c084fc;
+      color: white;
+      box-shadow: 0 0 12px rgba(139, 92, 246, 0.5);
+    }
+
+    .level-btn.active i {
+      color: #f0e6ff;
+    }
+
+    /* hero section */
+    .hero {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .hero h1 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #c084fc, #f472b6, #a78bfa);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      letter-spacing: -0.5px;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .hero h1 i {
+      background: none;
+      -webkit-text-fill-color: #c084fc;
+      font-size: 2rem;
+    }
+
+    .hero p {
+      color: #a0a8c0;
+      margin-top: 8px;
+      font-weight: 500;
+    }
+
+    /* stats card */
+    .stats-card {
+      background: rgba(20, 12, 40, 0.65);
+      backdrop-filter: blur(12px);
+      border-radius: 2rem;
+      padding: 1rem 1.8rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-bottom: 2rem;
+      border: 1px solid rgba(139, 92, 246, 0.4);
+    }
+
+    .total-box {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: #E0D6FF;
+      font-weight: 600;
+    }
+
+    .total-box i {
+      font-size: 2rem;
+      color: #f472b6;
+    }
+
+    .total-number {
+      background: #0a0a1a;
+      padding: 6px 20px;
+      border-radius: 50px;
+      font-size: 2rem;
+      font-weight: 800;
+      color: #f472b6;
+      font-family: monospace;
+      letter-spacing: 2px;
+      border: 1px solid #f472b6;
+    }
+
+    .legend {
+      display: flex;
+      gap: 20px;
+    }
+
+    .legend span {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.85rem;
+      color: #c4b5fd;
+    }
+
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #3b2a6b;
+    }
+
+    .dot.active {
+      background: #10b981;
+      box-shadow: 0 0 6px #34d399;
+    }
+
+    /* dynamic section title */
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 1.5rem 0 1rem 0;
+      padding-bottom: 6px;
+      border-bottom: 2px solid rgba(139, 92, 246, 0.4);
+    }
+
+    .section-title i {
+      font-size: 1.5rem;
+      color: #f472b6;
+    }
+
+    .section-title h2 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #f0ecff;
+    }
+
+    .badge {
+      background: #ec4899;
+      padding: 2px 12px;
+      border-radius: 50px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: #0a0a1a;
+    }
+
+    /* button grid */
+    .btn-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 14px;
+      max-height: 65vh;
+      overflow-y: auto;
+      padding-right: 8px;
+    }
+
+    .btn-grid::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    .btn-grid::-webkit-scrollbar-track {
+      background: #1e1a3a;
+      border-radius: 10px;
+    }
+
+    .btn-grid::-webkit-scrollbar-thumb {
+      background: #c084fc;
+      border-radius: 10px;
+    }
+
+    .offer-btn {
+      background: linear-gradient(105deg, #16123a, #0e0c2a);
+      border: 1px solid #3b2b6b;
+      border-radius: 60px;
+      padding: 12px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      text-decoration: none;
+      transition: all 0.25s ease;
+      color: #dddaff;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .offer-btn:hover {
+      transform: translateY(-3px);
+      background: linear-gradient(105deg, #201d4a, #13113a);
+      border-color: #c084fc;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.4);
+    }
+
+    .btn-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      overflow: hidden;
+    }
+
+    .btn-left i {
+      font-size: 1.2rem;
+      color: #f472b6;
+      min-width: 28px;
+      text-align: center;
+    }
+
+    .btn-left span {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .click-count {
+      background: #00000055;
+      border-radius: 40px;
+      padding: 3px 12px;
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: #f472b6;
+      border: 0.5px solid #f472b6;
+      font-family: monospace;
+    }
+
+    .offer-btn.clicked {
+      background: linear-gradient(105deg, #0f462f, #0a2c24);
+      border-color: #10b981;
+    }
+
+    .offer-btn.clicked .click-count {
+      background: #064e3b;
+      color: #fbbf24;
+    }
+
+    .reset-btn {
+      background: rgba(236, 72, 153, 0.15);
+      border: 1px solid #ec4899;
+      border-radius: 50px;
+      padding: 6px 18px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: #f9a8d4;
+      cursor: pointer;
+      transition: 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .reset-btn:hover {
+      background: #ec489930;
+      color: #ffffff;
+      border-color: #f472b6;
+    }
+
+    footer {
+      margin-top: 2rem;
+      text-align: center;
+      color: #5b5d8a;
+      font-size: 0.75rem;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    @media (max-width: 850px) {
+      .main-container { flex-direction: column; }
+      .level-sidebar {
+        position: static;
+        width: 100%;
+        display: flex;
+        gap: 12px;
+        flex-direction: row;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      .level-btn { width: auto; padding: 10px 24px; margin-bottom: 0; }
+      .btn-grid { max-height: 50vh; }
+    }
+  </style>
+</head>
+<body>
+<div class="main-container">
+  <!-- LEFT : DYNAMIC CONTENT -->
+  <div class="content-area">
+    <div class="hero">
+      <h1><i class="fas fa-crown"></i> LEVEL UP ZONE <i class="fas fa-gem"></i></h1>
+      <p>10 Exclusive Live Deals · Switch Levels & Claim Rewards</p>
+    </div>
+
+    <div class="stats-card">
+      <div class="total-box">
+        <i class="fas fa-chart-line"></i>
+        <span>Total Clicks</span>
+        <div class="total-number" id="totalClicks">0</div>
+      </div>
+      <div class="legend">
+        <span><i class="dot"></i> Pending</span>
+        <span><i class="dot active"></i> Clicked</span>
+      </div>
+    </div>
+
+    <!-- Dynamic header & grid -->
+    <div class="section-title" id="dynamicSectionTitle">
+      <i class="fas fa-layer-group"></i>
+      <h2 id="levelName">Level 1 · Starter Pack</h2>
+      <div class="badge" id="levelBadge">Active</div>
+    </div>
+    <div id="offersGrid" class="btn-grid"></div>
+
+    <footer>
+      <span><i class="far fa-clock"></i> 10 Live Offers · Dynamic Level System</span>
+      <div class="reset-btn" id="resetAllBtn"><i class="fas fa-trash-alt"></i> Reset All Counters</div>
+    </footer>
+  </div>
+
+  <!-- RIGHT : 3 LEVEL BUTTONS (STICKY) -->
+  <div class="level-sidebar">
+    <h3><i class="fas fa-toggle-on"></i> Select Tier</h3>
+    <div class="level-btn" data-level="1">
+      <i class="fas fa-star"></i> LEVEL 1
+    </div>
+    <div class="level-btn" data-level="2">
+      <i class="fas fa-gem"></i> LEVEL 2
+    </div>
+    <div class="level-btn" data-level="3">
+      <i class="fas fa-crown"></i> LEVEL 3
+    </div>
+  </div>
+</div>
+
+<script>
+  // ==================== 10 LINKS ====================
+  const ALL_LINKS = [
+    "https://www.effectivecpmnetwork.com/q8f0jadcx3?key=ad245e8221c568129915aee714dee270",
+    "https://www.effectivecpmnetwork.com/qsrni6ixr?key=c0d9e63d736e29a68b3f27fc4df7d144",
+    "https://www.effectivecpmnetwork.com/rtmusenqr?key=193d4cc0db8a4ba7c2e13378c236b978",
+    "https://www.effectivecpmnetwork.com/d4nahs7zg?key=9382e27320e47ebb0579b6d028e774d4",
+    "https://www.effectivecpmnetwork.com/fensug49t?key=cb2f19e8ad657fda6c622cf4936ba13f",
+    "https://www.effectivecpmnetwork.com/yftzi49h?key=6f31813052ebeeb7de0245c6833621cb",
+    "https://www.effectivecpmnetwork.com/yef1p5nc?key=25e3391f5793ab6749e214d3f6c1cd8d",
+    "https://www.effectivecpmnetwork.com/z24cvdecjq?key=bf14f4e792d30394e56371490d19a931",
+    "https://www.effectivecpmnetwork.com/mvzy4ksu9n?key=adb4c9c0eb116344f8a1087e61553d26",
+    "https://www.effectivecpmnetwork.com/jcknakun?key=ed43705ed71b0e633831dae127ec02fe"
+  ];
+
+  // LEVEL CONFIGURATION: 3 levels (1->3 offers, 2->3 offers, 3->4 offers)
+  const LEVEL_OFFERS = {
+    1: [
+      { name: "⚡ Plasma Strike", icon: "bolt", link: ALL_LINKS[0] },
+      { name: "🚀 Nebula Boost", icon: "rocket", link: ALL_LINKS[1] },
+      { name: "🎁 Quantum Gift", icon: "gift", link: ALL_LINKS[2] }
+    ],
+    2: [
+      { name: "👑 Royal Eclipse", icon: "crown", link: ALL_LINKS[3] },
+      { name: "📱 Phantom Pro", icon: "mobile-alt", link: ALL_LINKS[4] },
+      { name: "🏎️ Hyper Speed", icon: "car", link: ALL_LINKS[5] }
+    ],
+    3: [
+      { name: "💎 Eternal Gem", icon: "gem", link: ALL_LINKS[6] },
+      { name: "₿ Crypto Nebula", icon: "bitcoin", link: ALL_LINKS[7] },
+      { name: "🪙 Golden Empire", icon: "coins", link: ALL_LINKS[8] },
+      { name: "🌌 Galactic Pass", icon: "star", link: ALL_LINKS[9] }
+    ]
+  };
+
+  // Total offers = 3+3+4 = 10
+  const TOTAL_OFFERS = 10;
+  let clickCounts = new Array(TOTAL_OFFERS).fill(0);
+  const STORAGE_KEY = "levelUpTracker10";
+
+  // Map each global index to its level & local index
+  function buildGlobalIndexMap() {
+    let map = [];
+    let globalIdx = 0;
+    for (let lvl = 1; lvl <= 3; lvl++) {
+      for (let i = 0; i < LEVEL_OFFERS[lvl].length; i++) {
+        map.push({ level: lvl, localIdx: i, globalIdx });
+        globalIdx++;
+      }
+    }
+    return map;
+  }
+
+  const globalMap = buildGlobalIndexMap(); // length 10
+
+  // Current active level (1,2,3)
+  let currentLevel = 1;
+
+  function loadCounts() {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      try {
+        let arr = JSON.parse(saved);
+        if (arr.length === TOTAL_OFFERS) clickCounts = arr;
+      } catch(e) {}
+    }
+  }
+
+  function saveCounts() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(clickCounts));
+  }
+
+  function updateTotalDisplay() {
+    const total = clickCounts.reduce((a,b) => a+b, 0);
+    document.getElementById("totalClicks").innerText = total;
+  }
+
+  // get global index based on level + local index
+  function getGlobalIndex(level, localIdx) {
+    let idx = 0;
+    for (let l = 1; l < level; l++) {
+      idx += LEVEL_OFFERS[l].length;
+    }
+    return idx + localIdx;
+  }
+
+  function renderCurrentLevel() {
+    const gridContainer = document.getElementById("offersGrid");
+    gridContainer.innerHTML = "";
+    const offers = LEVEL_OFFERS[currentLevel];
+    const levelTitle = document.getElementById("levelName");
+    const levelBadge = document.getElementById("levelBadge");
+
+    if (currentLevel === 1) {
+      levelTitle.innerText = "Level 1 · Starter Pack";
+      levelBadge.innerText = "3 Offers";
+    } else if (currentLevel === 2) {
+      levelTitle.innerText = "Level 2 · Elite Access";
+      levelBadge.innerText = "Premium";
+    } else {
+      levelTitle.innerText = "Level 3 · Legendary Vault";
+      levelBadge.innerText = "Ultimate";
+    }
+
+    offers.forEach((offer, localIdx) => {
+      const globalIdx = getGlobalIndex(currentLevel, localIdx);
+      const count = clickCounts[globalIdx];
+      const isClicked = count > 0;
+      const btn = document.createElement("a");
+      btn.href = offer.link;
+      btn.target = "_blank";
+      btn.rel = "noopener noreferrer";
+      btn.className = "offer-btn" + (isClicked ? " clicked" : "");
+      btn.setAttribute("data-global-idx", globalIdx);
+
+      btn.innerHTML = `
+        <div class="btn-left">
+          <i class="fas fa-${offer.icon}"></i>
+          <span>${offer.name}</span>
+        </div>
+        <div class="click-count">${count}</div>
+      `;
+
+      btn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        clickCounts[globalIdx] += 1;
+        saveCounts();
+        updateTotalDisplay();
+        renderCurrentLevel(); // re-render current level with new counts
+      });
+
+      gridContainer.appendChild(btn);
+    });
+  }
+
+  function setActiveLevel(level) {
+    currentLevel = level;
+    // update active style on sidebar buttons
+    document.querySelectorAll(".level-btn").forEach(btn => {
+      const btnLevel = parseInt(btn.getAttribute("data-level"));
+      if (btnLevel === level) {
+        btn.classList.add("active");
+      } else {
+        btn.classList.remove("active");
+      }
+    });
+    renderCurrentLevel();
+  }
+
+  function resetCounters() {
+    for (let i = 0; i < TOTAL_OFFERS; i++) clickCounts[i] = 0;
+    saveCounts();
+    updateTotalDisplay();
+    renderCurrentLevel();
+  }
+
+  // Event listeners for level buttons
+  document.querySelectorAll(".level-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const level = parseInt(btn.getAttribute("data-level"));
+      setActiveLevel(level);
+    });
+  });
+
+  document.getElementById("resetAllBtn").addEventListener("click", resetCounters);
+
+  loadCounts();
+  setActiveLevel(1); // default level 1
+  updateTotalDisplay();
+</script>
+</body>
+</html>
